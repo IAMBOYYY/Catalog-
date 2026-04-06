@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vectra Electronics Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f7f4;
+  --bg2: #f0ede8;
+  --white: #ffffff;
+  --ink: #111110;
+  --ink2: #3a3935;
+  --muted: #8c8880;
+  --border: #e2ddd8;
+  --gold: #b8860b;
+  --gold-light: #f5e6c0;
+  --green: #1a7a4a;
+  --green-wa: #25D366;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 48px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06);
+  --radius: 14px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--ink); font-family:'Plus Jakarta Sans',sans-serif; min-height:100vh; -webkit-font-smoothing:antialiased; }
+
+.announce { background:var(--ink); color:#fff; text-align:center; padding:9px 20px; font-size:12px; letter-spacing:.5px; font-weight:500; }
+.announce span { color:#f5c842; }
+
+header { background:rgba(248,247,244,0.96); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:200; }
+.header-inner { max-width:1280px; margin:0 auto; padding:0 20px; height:64px; display:flex; align-items:center; gap:20px; }
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
+.logo-mark { width:36px; height:36px; background:var(--ink); border-radius:9px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; }
+.logo-name { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; color:var(--ink); display:block; line-height:1; }
+.logo-sub { font-size:9.5px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; display:block; margin-top:2px; }
+.search-wrap { flex:1; max-width:460px; position:relative; }
+.search-wrap input { width:100%; background:var(--white); border:1.5px solid var(--border); border-radius:30px; padding:10px 18px 10px 42px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; color:var(--ink); outline:none; transition:border-color .2s,box-shadow .2s; }
+.search-wrap input:focus { border-color:var(--ink); box-shadow:0 0 0 3px rgba(17,17,16,.07); }
+.search-wrap input::placeholder { color:var(--muted); }
+.search-ico { position:absolute; left:15px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:15px; pointer-events:none; }
+.header-right { display:flex; align-items:center; gap:10px; margin-left:auto; }
+.wa-header { display:flex; align-items:center; gap:7px; background:var(--green-wa); color:#fff; text-decoration:none; border-radius:30px; padding:9px 18px; font-size:13px; font-weight:600; white-space:nowrap; transition:opacity .2s,transform .15s; box-shadow:0 2px 8px rgba(37,211,102,.35); }
+.wa-header:hover { opacity:.9; transform:translateY(-1px); }
+
+.hero { background:var(--white); border-bottom:1px solid var(--border); padding:52px 20px 48px; text-align:center; position:relative; overflow:hidden; }
+.hero-deco { position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(184,134,11,.07) 0%,transparent 70%); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; }
+.hero-tag { display:inline-flex; align-items:center; gap:6px; background:var(--gold-light); color:var(--gold); border-radius:20px; padding:5px 14px; font-size:11.5px; font-weight:600; letter-spacing:.5px; margin-bottom:18px; animation:fadeDown .6s ease both; }
+.hero h1 { font-family:'Playfair Display',serif; font-size:clamp(30px,6vw,54px); font-weight:700; line-height:1.12; letter-spacing:-.5px; color:var(--ink); margin-bottom:14px; animation:fadeDown .6s .1s ease both; }
+.hero h1 em { font-style:italic; color:var(--gold); }
+.hero p { color:var(--muted); font-size:15px; max-width:440px; margin:0 auto 28px; line-height:1.65; animation:fadeDown .6s .2s ease both; }
+.hero-stats { display:inline-flex; gap:32px; animation:fadeDown .6s .3s ease both; }
+.stat { text-align:center; }
+.stat .num { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:var(--ink); display:block; }
+.stat .lbl { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+
+.strip-wrap { background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:64px; z-index:100; }
+.strip { max-width:1280px; margin:0 auto; padding:0 20px; display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; }
+.strip::-webkit-scrollbar { display:none; }
+.cat-pill { flex-shrink:0; background:none; border:none; padding:14px 16px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; color:var(--muted); cursor:pointer; white-space:nowrap; border-bottom:2px solid transparent; transition:color .2s,border-color .2s; font-weight:500; }
+.cat-pill:hover { color:var(--ink); }
+.cat-pill.active { color:var(--ink); border-bottom-color:var(--ink); font-weight:600; }
+
+.main { max-width:1280px; margin:0 auto; padding:28px 20px 80px; }
+.grid-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+.grid-title { font-size:13px; color:var(--muted); font-weight:500; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:18px; }
+
+.card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s ease,border-color .2s; animation:cardIn .5s ease both; position:relative; display:flex; flex-direction:column; }
+.card:hover { transform:translateY(-5px); box-shadow:var(--shadow-lg); border-color:#d4cfc9; }
+@keyframes cardIn { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+.card-badge { position:absolute; top:12px; left:12px; z-index:3; font-size:9.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 9px; border-radius:20px; }
+.badge-hot { background:#fff0e0; color:#c75b00; }
+.badge-new { background:#e0f0ff; color:#0057b8; }
+.badge-sale { background:#ffe0e0; color:#c00; }
+.badge-top { background:var(--gold-light); color:var(--gold); }
+
+.card-img { aspect-ratio:1; background:var(--bg); display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; }
+.card-img img { width:100%; height:100%; object-fit:contain; padding:20px; transition:transform .45s cubic-bezier(.25,.46,.45,.94); }
+.card:hover .card-img img { transform:scale(1.08); }
+
+.card-overlay { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(17,17,16,.55)); padding:20px 14px 12px; opacity:0; transition:opacity .25s; display:flex; justify-content:center; }
+.card:hover .card-overlay { opacity:1; }
+.overlay-btn { background:var(--green-wa); color:#fff; border:none; border-radius:20px; padding:7px 16px; font-size:12px; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif; cursor:pointer; display:flex; align-items:center; gap:5px; text-decoration:none; }
+
+.card-body { padding:14px 15px 6px; flex:1; display:flex; flex-direction:column; gap:5px; }
+.card-cat { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
+.card-name { font-size:14px; font-weight:600; color:var(--ink); line-height:1.38; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.card-desc { font-size:12px; color:var(--muted); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.card-price { font-size:15px; font-weight:700; color:var(--ink); font-family:'Playfair Display',serif; }
+.card-footer { padding:12px 14px 14px; }
+.wa-card { width:100%; background:#fff; border:1.5px solid var(--green-wa); color:var(--green); border-radius:8px; padding:9px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; transition:background .2s,color .2s,transform .15s; }
+.wa-card:hover { background:var(--green-wa); color:#fff; transform:translateY(-1px); }
+.wa-card:active { transform:scale(.97); }
+
+.skel { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.skel-img { aspect-ratio:1; background:linear-gradient(90deg,var(--bg) 25%,var(--bg2) 50%,var(--bg) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
+.skel-body { padding:14px; display:flex; flex-direction:column; gap:8px; }
+.skel-line { height:11px; border-radius:6px; background:linear-gradient(90deg,var(--bg) 25%,var(--bg2) 50%,var(--bg) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
+.skel-line.s { width:50%; } .skel-line.m { width:75%; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+.empty-state { grid-column:1/-1; text-align:center; padding:80px 20px; }
+.empty-ico { font-size:52px; margin-bottom:14px; }
+.empty-state h3 { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:8px; }
+.empty-state p { color:var(--muted); font-size:14px; }
+
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(17,17,16,.6); z-index:500; backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:16px; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--white); border-radius:20px; max-width:460px; width:100%; overflow:hidden; box-shadow:var(--shadow-lg); animation:modalPop .32s cubic-bezier(.34,1.56,.64,1) both; max-height:90vh; overflow-y:auto; }
+@keyframes modalPop { from{opacity:0;transform:scale(.88) translateY(24px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.modal-img-wrap { background:var(--bg); aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; position:relative; }
+.modal-img-wrap img { width:100%; height:100%; object-fit:contain; padding:28px; }
+.modal-close-btn { position:absolute; top:12px; right:12px; width:32px; height:32px; background:rgba(17,17,16,.08); border:none; border-radius:50%; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+.modal-close-btn:hover { background:rgba(17,17,16,.16); }
+.modal-body { padding:22px 22px 26px; }
+.modal-cat { font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; font-weight:600; margin-bottom:8px; }
+.modal-name { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; line-height:1.25; margin-bottom:8px; }
+.modal-price-row { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.modal-price { font-size:20px; font-weight:700; font-family:'Playfair Display',serif; }
+.modal-on-request { background:var(--gold-light); color:var(--gold); font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; }
+.modal-divider { height:1px; background:var(--border); margin:16px 0; }
+.modal-desc { color:var(--ink2); font-size:14px; line-height:1.7; margin-bottom:22px; }
+.modal-wa-btn { width:100%; background:var(--green-wa); border:none; border-radius:12px; padding:15px; color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; transition:opacity .2s,transform .15s; box-shadow:0 4px 16px rgba(37,211,102,.4); }
+.modal-wa-btn:hover { opacity:.92; transform:translateY(-1px); }
+.modal-note { text-align:center; font-size:11.5px; color:var(--muted); margin-top:12px; }
+
+footer { background:var(--ink); color:rgba(255,255,255,.6); padding:36px 20px; text-align:center; }
+.footer-logo { font-family:'Playfair Display',serif; font-size:20px; color:#fff; margin-bottom:8px; }
+footer p { font-size:13px; line-height:1.6; }
+footer a { color:var(--green-wa); text-decoration:none; }
+
+@media(max-width:540px) {
+  .grid { grid-template-columns:repeat(2,1fr); gap:12px; }
+  .hero-stats { gap:20px; }
+  .hero { padding:36px 16px 32px; }
+  .header-inner { gap:10px; }
+}
+@media(max-width:380px) {
+  .grid { gap:8px; }
+  .card-body { padding:10px 10px 4px; }
+  .card-footer { padding:8px 10px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="announce">🚚 Free delivery available · <span>Best wholesale prices guaranteed</span> · 📍 Kurukshetra, Haryana</div>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-mark">⚡</div>
+      <div>
+        <span class="logo-name">Vectra</span>
+        <span class="logo-sub">Electronics Hub</span>
+      </div>
+    </a>
+    <div class="search-wrap">
+      <span class="search-ico">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search phones, earbuds, chargers…">
+    </div>
+    <div class="header-right">
+      <a class="wa-header" href="https://wa.me/918295685602?text=Hi%20Vectra%20Electronics!%20I%27d%20like%20to%20enquire%20about%20your%20products." target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Chat with us
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-deco"></div>
+  <div class="hero-tag">⚡ Premium Electronics at Wholesale Prices</div>
+  <h1>Everything You Need,<br><em>Delivered Fast.</em></h1>
+  <p>Browse our curated catalog and enquire directly on WhatsApp. No middlemen, no hidden fees.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="num" id="heroCount">—</span><span class="lbl">Products</span></div>
+    <div class="stat"><span class="num">100%</span><span class="lbl">Genuine</span></div>
+    <div class="stat"><span class="num">Fast</span><span class="lbl">Delivery</span></div>
+  </div>
+</section>
+
+<div class="strip-wrap">
+  <div class="strip" id="categoryStrip">
+    <button class="cat-pill active" data-cat="All">All</button>
+  </div>
+</div>
+
+<main class="main">
+  <div class="grid-header">
+    <div class="grid-title" id="gridTitle">Loading products…</div>
+  </div>
+  <div class="grid" id="productGrid">
+    <div class="skel"><div class="skel-img"></div><div class="skel-body"><div class="skel-line s"></div><div class="skel-line m"></div><div class="skel-line"></div></div></div>
+    <div class="skel"><div class="skel-img"></div><div class="skel-body"><div class="skel-line s"></div><div class="skel-line m"></div><div class="skel-line"></div></div></div>
+    <div class="skel"><div class="skel-img"></div><div class="skel-body"><div class="skel-line s"></div><div class="skel-line m"></div><div class="skel-line"></div></div></div>
+    <div class="skel"><div class="skel-img"></div><div class="skel-body"><div class="skel-line s"></div><div class="skel-line m"></div><div class="skel-line"></div></div></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">Vectra Electronics Hub</div>
+  <p>📍 Kurukshetra, Haryana &nbsp;·&nbsp; <a href="https://wa.me/918295685602">+91 82956 85602</a></p>
+  <p style="margin-top:8px;font-size:12px;">© 2025 Vectra Electronics Hub · All rights reserved</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-img-wrap">
+      <img id="mImg" src="" alt="">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-cat" id="mCat"></div>
+      <div class="modal-name" id="mName"></div>
+      <div class="modal-price-row">
+        <div class="modal-price" id="mPrice"></div>
+        <div class="modal-on-request" id="mOnReq" style="display:none">Price on Request</div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-desc" id="mDesc"></div>
+      <a class="modal-wa-btn" id="mWA" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Enquire on WhatsApp
+      </a>
+      <p class="modal-note">💬 We usually reply within minutes</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const GITHUB_USER = "IAMBOYYY";
+const GITHUB_REPO = "Catalog-";
+const YOUR_WA     = "918295685602";
+
+const PRODUCTS_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/products.json`;
+
+let all = [], activeCat = "All", query = "";
+
+function waLink(name) {
+  const msg = encodeURIComponent(`Hi Vectra Electronics! 👋\n\nI'm interested in:\n*${name}*\n\nCould you please share the price and availability? Thank you!`);
+  return `https://wa.me/${YOUR_WA}?text=${msg}`;
+}
+
+function badgeClass(b) {
+  return { HOT:"badge-hot", NEW:"badge-new", SALE:"badge-sale", TOP:"badge-top" }[b] || "badge-hot";
+}
+
+async function init() {
+  try {
+    const r = await fetch(PRODUCTS_URL + "?_=" + Date.now());
+    if (!r.ok) throw new Error();
+    all = await r.json();
+  } catch { all = []; }
+  document.getElementById("heroCount").textContent = all.length;
+  buildCats();
+  render();
+}
+
+function buildCats() {
+  const cats = [...new Set(all.map(p => p.category))];
+  const strip = document.getElementById("categoryStrip");
+  cats.forEach(c => {
+    const btn = document.createElement("button");
+    btn.className = "cat-pill";
+    btn.dataset.cat = c;
+    btn.textContent = c;
+    strip.appendChild(btn);
+  });
+}
+
+function render() {
+  const filtered = all.filter(p => {
+    const mc = activeCat === "All" || p.category === activeCat;
+    const ms = !query || [p.name, p.category, p.description].some(s => s.toLowerCase().includes(query));
+    return mc && ms;
+  });
+  document.getElementById("gridTitle").textContent =
+    `Showing ${filtered.length} product${filtered.length !== 1 ? "s" : ""}${activeCat !== "All" ? " in " + activeCat : ""}`;
+  const grid = document.getElementById("productGrid");
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-ico">${all.length === 0 ? "🏪" : "🔍"}</div><h3>${all.length === 0 ? "Coming Soon" : "Nothing found"}</h3><p>${all.length === 0 ? "Products are being added. Check back shortly!" : "Try a different search or category."}</p></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="card" style="animation-delay:${Math.min(i,12)*0.045}s" onclick="openModal(${p.id})">
+      ${p.badge ? `<div class="card-badge ${badgeClass(p.badge)}">${p.badge}</div>` : ""}
+      <div class="card-img">
+        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://placehold.co/400x400/f0ede8/8c8880?text=📦'">
+        <div class="card-overlay">
+          <a class="overlay-btn" href="${waLink(p.name)}" target="_blank" onclick="event.stopPropagation()">💬 Quick Enquiry</a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">${p.category}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.description}</div>
+        ${p.price && p.price !== "On Request" ? `<div class="card-price">${p.price}</div>` : ""}
+      </div>
+      <div class="card-footer">
+        <a class="wa-card" href="${waLink(p.name)}" target="_blank" onclick="event.stopPropagation()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Enquire on WhatsApp
+        </a>
+      </div>
+    </div>
+  `).join("");
+}
+
+document.getElementById("categoryStrip").addEventListener("click", e => {
+  const btn = e.target.closest(".cat-pill");
+  if (!btn) return;
+  document.querySelectorAll(".cat-pill").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  activeCat = btn.dataset.cat;
+  render();
+});
+
+document.getElementById("searchInput").addEventListener("input", e => {
+  query = e.target.value.toLowerCase().trim();
+  render();
+});
+
+function openModal(id) {
+  const p = all.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById("mImg").src = p.image;
+  document.getElementById("mCat").textContent = p.category;
+  document.getElementById("mName").textContent = p.name;
+  document.getElementById("mDesc").textContent = p.description;
+  const priceEl = document.getElementById("mPrice");
+  const reqEl = document.getElementById("mOnReq");
+  if (p.price && p.price !== "On Request") {
+    priceEl.textContent = p.price; priceEl.style.display = "block"; reqEl.style.display = "none";
+  } else {
+    priceEl.style.display = "none"; reqEl.style.display = "inline-flex";
+  }
+  document.getElementById("mWA").href = waLink(p.name);
+  document.getElementById("modalOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+  document.getElementById("modalOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.getElementById("modalOverlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("modalOverlay")) closeModal();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+init();
+</script>
+</body>
+</html>
